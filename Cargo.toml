@@ -1,0 +1,185 @@
+# Cargo workspace definition
+[workspace]
+members = [
+    "node/dev-node",
+    "runtime/dev-runtime",
+]
+
+exclude = ["contracts"]
+
+# Cargo dependency resolver 
+resolver = "2"
+
+# Build profile
+[profile.release]
+panic = "unwind"  
+
+[workspace.package]
+authors = ["LogosLabs"]
+homepage = "https://logoslabs.io"
+repository = "https://github.com/logoslabstech/sub-dev-environment"
+edition = "2021"
+
+[workspace.dependencies]
+#==============================================================================================#
+# Rust package register (crates.io)
+#==============================================================================================#
+#===============#
+# WASM (no_std) 
+#===============#
+parity-scale-codec = { version = "3.6.1", default-features = false }  # https://crates.io/crates/parity-scale-codec
+scale-info =         { version = "2.10.0", default-features = false } # https://crates.io/crates/scale-info
+serde_json =         { version = "1.0.111", default-features = false} # https://crates.io/crates/serde_json
+
+#===============#
+# NATIVE (std)
+#===============#
+clap =               { version = "4.4.18" } # https://crates.io/crates/clap
+futures =            { version = "0.3.21" } # https://crates.io/crates/futures
+jsonrpsee =          { version = "0.20.3" } # https://crates.io/crates/jsonrpsee
+
+#==============================================================================================#
+# Local dependencies
+#==============================================================================================#
+# Development node runtime
+dev-runtime =  { version = "0.0.1-dev", path = "runtime/dev-runtime" }
+
+#==============================================================================================#
+# Substrate PRIMITIVES (github.com/paritytech/polkadot-sdk - release-polkadot-v1.7.0 )
+#==============================================================================================#
+#===============#
+# WASM (no_std) 
+#===============#
+# sp_api:                      https://paritytech.github.io/polkadot-sdk/master/sp_api/index.html
+sp-api =                       { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_block_builder:            https://paritytech.github.io/polkadot-sdk/master/sp_block_builder/index.html
+sp-block-builder =             { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_core:                     https://paritytech.github.io/polkadot-sdk/master/sp_core/index.html
+sp-core =                      { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_consensus_aura:           https://paritytech.github.io/polkadot-sdk/master/sp_consensus_aura/index.html                                              
+sp-consensus-aura =            { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_consensus_grandpa:        https://paritytech.github.io/polkadot-sdk/master/sp_consensus_grandpa/index.html
+sp-consensus-grandpa =         { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_genesis_builder:          https://paritytech.github.io/polkadot-sdk/master/sp_genesis_builder/index.html      
+sp-genesis-builder =           { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_inherents:                https://paritytech.github.io/polkadot-sdk/master/sp_inherents/index.html
+sp-inherents =                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_offchain:                 https://paritytech.github.io/polkadot-sdk/master/sp_offchain/index.html
+sp-offchain =                  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_runtime:                  https://paritytech.github.io/polkadot-sdk/master/sp_runtime/index.html
+sp-runtime =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_session:                  https://paritytech.github.io/polkadot-sdk/master/sp_session/index.html
+sp-session =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_std:                      https://paritytech.github.io/polkadot-sdk/master/sp_std/index.html
+sp-std =                       { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_storage:                  https://paritytech.github.io/polkadot-sdk/master/sp_storage/index.html
+sp-storage =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_transaction_pool:         https://paritytech.github.io/polkadot-sdk/master/sp_transaction_pool/index.html
+sp-transaction-pool =          { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# sp_version:                  https://paritytech.github.io/polkadot-sdk/master/sp_version/index.html
+sp-version =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+
+#==============================================================================================#
+# Substrate CLIENT (github.com/paritytech/polkadot-sdk - release-polkadot-v1.7.0 )
+#==============================================================================================#
+#===============#
+# NATIVE (std)
+#===============#
+# sc_basic_authorship:         https://paritytech.github.io/polkadot-sdk/master/sc_basic_authorship/index.html
+sc-basic-authorship =          { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_cli:                      https://paritytech.github.io/polkadot-sdk/master/sc_cli/index.html
+sc-cli =                       { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_consensus                 https://paritytech.github.io/polkadot-sdk/master/sc_consensus/index.html
+sc-consensus =                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_consensus_aura:           https://paritytech.github.io/polkadot-sdk/master/sc_consensus_aura/index.html
+sc-consensus-aura =            { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_consensus_grandpa:        https://paritytech.github.io/polkadot-sdk/master/sc_consensus_grandpa/index.html
+sc-consensus-grandpa =         { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_client_api:               https://paritytech.github.io/polkadot-sdk/master/sc_client_api/index.html
+sc-client-api =                { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_executor:                 https://paritytech.github.io/polkadot-sdk/master/sc_executor/index.html
+sc-executor =                  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_network:                  https://paritytech.github.io/polkadot-sdk/master/sc_network/index.html
+sc-network =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_offchain:                 https://paritytech.github.io/polkadot-sdk/master/sc_offchain/index.html
+sc-offchain =                  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_rpc_api:                  https://paritytech.github.io/polkadot-sdk/master/sc_rpc_api/index.html
+sc-rpc-api =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_service:                  https://paritytech.github.io/polkadot-sdk/master/sc_service/index.html
+sc-service =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_telemetry:                https://paritytech.github.io/polkadot-sdk/master/sc_telemetry/index.html
+sc-telemetry =                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_transaction_pool:         https://paritytech.github.io/polkadot-sdk/master/sc_transaction_pool/index.html
+sc-transaction-pool =          { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sc_transaction_pool_api:     https://paritytech.github.io/polkadot-sdk/master/sc_transaction_pool_api/index.html
+sc-transaction-pool-api =      { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sp_blockchain:               https://paritytech.github.io/polkadot-sdk/master/sp_blockchain/index.html
+sp-blockchain =                { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sp_io:                       https://paritytech.github.io/polkadot-sdk/master/sp_io/index.html
+sp-io =                        { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sp_keyring:                  https://paritytech.github.io/polkadot-sdk/master/sp_keyring/index.html
+sp-keyring =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# sp_timestamp:                https://paritytech.github.io/polkadot-sdk/master/sp_timestamp/index.html
+sp-timestamp =                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# substrate_frame_rpc_system:  https://paritytech.github.io/polkadot-sdk/master/substrate_frame_rpc_system/index.html
+substrate-frame-rpc-system =   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# try_runtime_cli:             https://paritytech.github.io/polkadot-sdk/master/try_runtime_cli/index.html
+try-runtime-cli =              { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+
+#==============================================================================================#
+# Substrate FRAME/PALLETS (github.com/paritytech/polkadot-sdk - release-polkadot-v1.7.0 )
+#==============================================================================================#
+#===============#
+# WASM (no_std)
+#===============#
+# frame_benchmarking:                         https://paritytech.github.io/polkadot-sdk/master/frame_benchmarking/index.html
+frame-benchmarking =                          { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# frame_executive:                            https://paritytech.github.io/polkadot-sdk/master/frame_executive/index.html
+frame-executive =                             { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# frame_support:                              https://paritytech.github.io/polkadot-sdk/master/frame_support/index.html
+frame-support =                               { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# frame_system:                               https://paritytech.github.io/polkadot-sdk/master/frame_system/index.html
+frame-system =                                { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# frame_system_benchmarking:                  https://paritytech.github.io/polkadot-sdk/master/frame_system_benchmarking/index.html
+frame-system-benchmarking =                   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false } 
+# frame_system_rpc_runtime_api:               https://paritytech.github.io/polkadot-sdk/master/frame_system_rpc_runtime_api/index.html
+frame-system-rpc-runtime-api =                { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# frame_try_runtime:                          https://paritytech.github.io/polkadot-sdk/master/frame_try_runtime/index.html
+frame-try-runtime =                           { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_aura:                                https://paritytech.github.io/polkadot-sdk/master/pallet_aura/index.html
+pallet-aura =                                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_balances:                            https://paritytech.github.io/polkadot-sdk/master/pallet_balances/index.html
+pallet-balances =                             { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_contracts:                           https://paritytech.github.io/polkadot-sdk/master/pallet_contracts/index.html#
+pallet-contracts =                            { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_grandpa:                             https://paritytech.github.io/polkadot-sdk/master/pallet_grandpa/index.html
+pallet-grandpa =                              { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_insecure_randomness_collective_flip  https://paritytech.github.io/polkadot-sdk/master/pallet_insecure_randomness_collective_flip/index.html
+pallet-insecure-randomness-collective-flip =  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_sudo:                                https://paritytech.github.io/polkadot-sdk/master/pallet_sudo/index.html
+pallet-sudo =                                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_timestamp:                           https://paritytech.github.io/polkadot-sdk/master/pallet_timestamp/index.html
+pallet-timestamp =                            { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_transaction_payment:                 https://paritytech.github.io/polkadot-sdk/master/pallet_transaction_payment/index.html
+pallet-transaction-payment =                  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_transaction_payment_rpc_runtime_api  https://paritytech.github.io/polkadot-sdk/master/pallet_transaction_payment_rpc_runtime_api/index.html
+pallet-transaction-payment-rpc-runtime-api =  { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+
+#===============#
+# NATIVE (std)
+#===============#
+# frame_benchmarkgin_cli:                     https://paritytech.github.io/polkadot-sdk/master/frame_benchmarking_cli/index.html
+frame-benchmarking-cli =                      { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# pallet_transaction_payment_rpc:             https://paritytech.github.io/polkadot-sdk/master/pallet_transaction_payment_rpc/index.html
+pallet-transaction-payment-rpc =              { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+
+#==============================================================================================#
+# Substrate build
+#==============================================================================================#
+#===============#
+# NATIVE (std)
+#===============#
+# substrate_build_script_utils:  https://paritytech.github.io/polkadot-sdk/master/substrate_build_script_utils/index.html
+substrate-build-script-utils =   { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }
+# substrate_wasm_builder:        https://paritytech.github.io/polkadot-sdk/master/substrate_wasm_builder/index.html
+substrate-wasm-builder =         { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0" }

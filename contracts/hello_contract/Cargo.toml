@@ -1,0 +1,22 @@
+[package]
+name = "hello"
+version = "0.0.1"
+authors = ["h3rak1it"]
+edition = "2021"
+
+[dependencies]
+ink = { version = "5.0.0", default-features = false }
+
+[dev-dependencies]
+ink_e2e = { version = "5.0.0" }
+
+[lib]
+path = "src/hello.rs"
+
+[features]
+default = ["std"]
+std = [
+    "ink/std",
+]
+ink-as-dependency = []
+e2e-tests = []
