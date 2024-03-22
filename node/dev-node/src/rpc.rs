@@ -2,22 +2,48 @@
 //! Substrate provides the `sc-rpc` crate, which defines the core RPC layer
 //! used by Substrate nodes. This file extends those RPC definitions with
 //! capabilities that are specific to this project's runtime configuration.
-
 #![warn(missing_docs)]
 
-// IMPORT AND TYPE DEFINITION
+/// IMPORT AND TYPE DEFINITION
+/////////////////////////////////////////////////////////////////////////////////////
+
+/// A thread-safe reference counter that allows multiple owners of a value.
 use std::sync::Arc;
+/// Enables the creation of modular RPC APIs.
 use jsonrpsee::RpcModule;
-use dev_runtime::{opaque::Block, AccountId, Balance, Nonce, BlockNumber, Hash, EventRecord};
+/// Enables access to the transaction pool of the node.
 use sc_transaction_pool_api::TransactionPool;
+/// A trait provided by the client implementation to gain access to the specific API functions of the runtime.
 use sp_api::ProvideRuntimeApi;
+/// Facilitates block construction.
 use sp_block_builder::BlockBuilder;
-use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
-//use frame_system::EventRecord;
+///
+use sp_blockchain::{
+	Error as BlockChainError,    // Manages blockchain operation errors.
+	HeaderBackend,               // Interface for blockchain header queries.
+	HeaderMetadata               // Provides blockchain header metadata.
+};
+use dev_runtime::{
+	opaque::Block,               // Represents the blockchain's block structure.
+	AccountId,                   // Unique identifier for accounts.
+	Balance,                     // Type for representing token balances.
+	Nonce,                       // Counter for account transactions.
+	BlockNumber,                 // Identifies block height.
+	Hash,                        // Cryptographic hash type.
+	EventRecord,                 // Stores event details within blocks.
+};
+
+
+/// Controls access to potentially unsafe RPC methods.
+// use frame_system::EventRecord;
 pub use sc_rpc_api::DenyUnsafe;
 
-// STRUCTURE AND TYPES
+/// STRUCTURE AND TYPES
+/////////////////////////////////////////////////////////////////////////////////////
 
+/// Defines structures and types that are necessary for the configuration and functioning of the RPC extensions.
+/// This is a central part of the RPC configuration.
+/// It brings together the components required to make the RPC interface fully functional
 /// Full client dependencies.
 pub struct FullDeps<C, P> {
 	/// The client instance to use.
@@ -28,9 +54,10 @@ pub struct FullDeps<C, P> {
 	pub deny_unsafe: DenyUnsafe,
 }
 
-// RPC EXTENSION FUNCTION
+/// RPC EXTENSION FUNCTION
+/////////////////////////////////////////////////////////////////////////////////////
 
-/// Instantiate all full RPC extensions.
+/// Is responsible for Instantiate a full RPC extensions structure for a Substrate Node.
 pub fn create_full<C, P>(
 	deps: FullDeps<C, P>,
 ) -> Result<RpcModule<()>, Box<dyn std::error::Error + Send + Sync>>

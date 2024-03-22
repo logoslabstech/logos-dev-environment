@@ -1,25 +1,51 @@
-// IMPORT AND SETUP
-use crate::service::FullClient;
-use dev_runtime as runtime;
-use runtime::{AccountId, Balance, BalancesCall, SystemCall};
-use sc_cli::Result;
-use sc_client_api::BlockBackend;
-use sp_core::{Encode, Pair};
-use sp_inherents::{InherentData, InherentDataProvider};
+ /// IMPORT AND SETUP
+/////////////////////////////////////////////////////////////////////////////////////
+
+/// Utility for working with predefined SR25519 key pairs (testing).
 use sp_keyring::Sr25519Keyring;
-use sp_runtime::{OpaqueExtrinsic, SaturatedConversion};
-use std::{sync::Arc, time::Duration};
+/// Represent a fully operational blockchain client
+use crate::service::FullClient;
+/// Result type for CLI operations, aliasing a standard Result with an error type relevant to CLI commands.
+use sc_cli::Result;
+/// Trait from sc_client_api for querying blockchain data by blocks.
+use sc_client_api::BlockBackend;
+use dev_runtime as runtime;
+use runtime::{
+	AccountId,                   // Account identification.
+	Balance,                     // Balance representation.
+	BalancesCall,                // Interacting with the balances.
+	SystemCall,                  // Interacting with system pallets
+};
+/// Used for encoding data and managing cryptographic key pairs.
+use sp_core::{
+	Encode,
+	Pair,
+};
+/// Tools for managing and providing data for block inclusions that do not come from external transactions, like timestamps.
+use sp_inherents::{
+	InherentData,
+	InherentDataProvider,
+};
+use sp_runtime::{
+	OpaqueExtrinsic,      // A generic extrinsic type that the blockchain doesn't interpret directly, making it flexible for various runtime definitions.
+	SaturatedConversion,  // A utility trait for converting between numerical types without overflow errors.
+};
+use std::{
+	sync::Arc,            // A thread-safe reference-counting pointer from Rusts standard library, used for managing shared access to data.
+	time::Duration,       // A time measurement unit from Rust's standard library, for specifying time durations in operations.
+};
+
+/// BENCHMARK STRUCTURE FOR RemarkBuilder
+/////////////////////////////////////////////////////////////////////////////////////
 
 /// Generates extrinsics for the `benchmark overhead` command.
-///
 /// Note: Should only be used for benchmarking.
 
-// BENCHMARK STRUCTURE FOR RemarkBuilder
 pub struct RemarkBuilder {
 	client: Arc<FullClient>,
 }
 
-// SPECIFIC BENCHMARK IMPLEMENTATION
+/// SPECIFIC BENCHMARK IMPLEMENTATION
 impl RemarkBuilder {
 	/// Creates a new [`Self`] from the given client.
 	pub fn new(client: Arc<FullClient>) -> Self {
@@ -27,7 +53,7 @@ impl RemarkBuilder {
 	}
 }
 
-// EXTERNAL BENCHMARK IMPLEMENTATION
+/// EXTERNAL BENCHMARK IMPLEMENTATION
 impl frame_benchmarking_cli::ExtrinsicBuilder for RemarkBuilder {
 	fn pallet(&self) -> &str {
 		"system"
@@ -51,18 +77,19 @@ impl frame_benchmarking_cli::ExtrinsicBuilder for RemarkBuilder {
 	}
 }
 
+/// BENCHMARK STRUCTURE FOR TransferKeepAliveBuilder
+/////////////////////////////////////////////////////////////////////////////////////
+
 /// Generates `Balances::TransferKeepAlive` extrinsics for the benchmarks.
-///
 /// Note: Should only be used for benchmarking.
 
-// BENCHMARK STRUCTURE FOR TransferKeepAliveBuilder
 pub struct TransferKeepAliveBuilder {
 	client: Arc<FullClient>,
 	dest: AccountId,
 	value: Balance,
 }
 
-// SPECIFIC BENCHMARK IMPLEMENTATION
+/// SPECIFIC BENCHMARK IMPLEMENTATION
 impl TransferKeepAliveBuilder {
 	/// Creates a new [`Self`] from the given client.
 	pub fn new(client: Arc<FullClient>, dest: AccountId, value: Balance) -> Self {
@@ -70,7 +97,7 @@ impl TransferKeepAliveBuilder {
 	}
 }
 
-// EXTERNAL BENCHMARK IMPLEMENTATION
+/// EXTERNAL BENCHMARK IMPLEMENTATION
 impl frame_benchmarking_cli::ExtrinsicBuilder for TransferKeepAliveBuilder {
 	fn pallet(&self) -> &str {
 		"balances"
@@ -95,11 +122,12 @@ impl frame_benchmarking_cli::ExtrinsicBuilder for TransferKeepAliveBuilder {
 	}
 }
 
+/// SUPPORT FUNCTIONS FOR BENCHMARKING
+/////////////////////////////////////////////////////////////////////////////////////
+
 /// Create a transaction using the given `call`.
-///
 /// Note: Should only be used for benchmarking.
 
-// SUPPORT FUNCTIONS FOR BENCHMARKING
 pub fn create_benchmark_extrinsic(
 	client: &FullClient,
 	sender: sp_core::sr25519::Pair,
@@ -152,11 +180,12 @@ pub fn create_benchmark_extrinsic(
 	)
 }
 
+/// INHERENT DATA FOR BENCHMARKING
+/////////////////////////////////////////////////////////////////////////////////////
+
 /// Generates inherent data for the `benchmark overhead` command.
-///
 /// Note: Should only be used for benchmarking.
 
-// INHERENT DATA FOR BENCHMARKING
 pub fn inherent_benchmark_data() -> Result<InherentData> {
 	let mut inherent_data = InherentData::new();
 	let d = Duration::from_millis(0);

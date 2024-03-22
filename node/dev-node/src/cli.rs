@@ -1,5 +1,7 @@
+/// RunCmd Command for launching Substrate nodes.
 use sc_cli::RunCmd;
 
+/// Struct for command-line interface configuration, integrating RunCmd
 #[derive(Debug, clap::Parser)]
 pub struct Cli {
 	#[command(subcommand)]
@@ -11,6 +13,7 @@ pub struct Cli {
 
 #[derive(Debug, clap::Subcommand)]
 #[allow(clippy::large_enum_variant)]
+/// Enum for CLI subcommands, providing blockchain management tools and utilities.
 pub enum Subcommand {
 	/// Key management cli utilities
 	#[command(subcommand)]
