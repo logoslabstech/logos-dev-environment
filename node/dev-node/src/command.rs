@@ -1,32 +1,41 @@
+#![warn(missing_docs)]
+
 /// IMPORT AND TYPE DEFINITION
 /////////////////////////////////////////////////////////////////////////////////////
-use sc_cli::SubstrateCli;           // Trait for Substrate CLI commands.
-use sc_service::PartialComponents;  // Components for node setup.
-use sp_keyring::Sr25519Keyring;     // Predefined SR25519 keys utility.
+
+// Trait for Substrate CLI commands.
+use sc_cli::SubstrateCli;
+// Components for node setup.
+use sc_service::PartialComponents;
+// Predefined SR25519 keys utility.
+use sp_keyring::Sr25519Keyring;
 
 use dev_runtime::{
-	Block,                          // The fundamental unit of the blockchain structure.
-	EXISTENTIAL_DEPOSIT,            // The minimum balance required to keep an account open.
+	Block,
+	EXISTENTIAL_DEPOSIT,
 };
 
 use crate::{
-	chain_spec,                     // Module defining blockchain specifications.
-	service,                        // Core node functionalities and service setup
-	cli::{                          // Struct for parsing command-line options
+	chain_spec,
+	service,
+	cli::{
 		Cli,
 		Subcommand,
 	},
-	benchmarking::{                 // Tools for performance testing.
-		inherent_benchmark_data,    // Data setup for benchmarks.
-		RemarkBuilder,              // Benchmark tool for no-op transactions.
-		TransferKeepAliveBuilder,   // Benchmark tool for transfer transactions.
+	benchmarking::{
+		inherent_benchmark_data,
+		RemarkBuilder,
+		TransferKeepAliveBuilder,
 	},
 };
 
 use frame_benchmarking_cli::{
-	BenchmarkCmd,                   // Command for executing benchmarks on runtime pallets.
-	ExtrinsicFactory,               // Interface for creating extrinsics during benchmarks.
-	SUBSTRATE_REFERENCE_HARDWARE,   // Defined metrics for standard hardware performance.
+	// Command for executing benchmarks on runtime pallets.
+	BenchmarkCmd,
+	// Interface for creating extrinsics during benchmarks.
+	ExtrinsicFactory,
+	// Defined metrics for standard hardware performance.
+	SUBSTRATE_REFERENCE_HARDWARE,
 };
 
 /// Imports the timestamp_with_aura_info function from the try_runtime_cli crate.
@@ -42,30 +51,31 @@ use try_runtime_cli::block_building_info::timestamp_with_aura_info;
 /// It provides specific information about the implementation and configures how blockchain specifications are loaded based on command-line arguments.
 
 impl SubstrateCli for Cli {
-	fn impl_name() -> String {                      // Returns the name of the implementation, useful for identification purposes.
+	// Returns the name of the implementation, useful for identification purposes.
+	fn impl_name() -> String {
 		"Logos dev-node".into()
 	}
-
-	fn impl_version() -> String {                   // Fetches the implementation version from the environment variables, set during compile time.
+	// Fetches the implementation version from the environment variables, set during compile time.
+	fn impl_version() -> String {
 		env!("SUBSTRATE_CLI_IMPL_VERSION").into()
 	}
-
-	fn description() -> String {                    // Retrieves the package description from Cargo's package metadata.
+	// Retrieves the package description from Cargo's package metadata.
+	fn description() -> String {
 		env!("CARGO_PKG_DESCRIPTION").into()
 	}
-
-	fn author() -> String {                         // Obtains the author information from Cargo's package metadata.
+	// Obtains the author information from Cargo's package metadata.
+	fn author() -> String {
 		env!("CARGO_PKG_AUTHORS").into()
 	}
-
-	fn support_url() -> String {                    // Provides a URL where users can find support or report issues.
+	// Provides a URL where users can find support or report issues.
+	fn support_url() -> String {
 		"https://github.com/logoslabstech/logos-dev-environment/issues/new".into()
 	}
-
-	fn copyright_start_year() -> i32 {              // Sets the copyright start year for the CLI application
+	// Sets the copyright start year for the CLI application.
+	fn copyright_start_year() -> i32 {
 		2024
 	}
-    // Crucial function that loads the blockchains specification based on the provided identifier.
+	// Crucial function that loads the blockchains specification based on the provided identifier.
 	// It supports loading predefined specs like "dev" or "local" configurations, or loading from a JSON file.
 	fn load_spec(&self, id: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
 		Ok(match id {
@@ -84,11 +94,11 @@ impl SubstrateCli for Cli {
 /// and orchestrates the execution of the program based on the CLI arguments
 /// and sub-commands specified by the user.
 
-/// Parse and run command line arguments
+// Parse and run command line arguments
 pub fn run() -> sc_cli::Result<()> {
 	let cli = Cli::from_args();
 
-    // SUB COMMAND HANDLER
+	// SUB COMMAND HANDLER
 	match &cli.subcommand {
 		// Manages crypto keys.
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
@@ -251,7 +261,7 @@ pub fn run() -> sc_cli::Result<()> {
 			runner.sync_run(|config| cmd.run::<Block>(&config))
 		},		
 
-        // FALLBACK AND NODE START
+		// FALLBACK AND NODE START
 		// Fallback scenario when no subcommand was specified when the node was started.
 		// In this case, the standard action is executed, which is the start of the complete node.
 		None => {

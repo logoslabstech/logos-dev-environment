@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 /// RunCmd Command for launching Substrate nodes.
 use sc_cli::RunCmd;
 

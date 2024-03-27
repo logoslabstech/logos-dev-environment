@@ -1,27 +1,35 @@
+#![warn(missing_docs)]
+
 /// IMPORT AND TYPE DEFINITION
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// Identifies the type of the blockchain (e.g. development, test, local, or live).
+// Identifies the type of the blockchain (e.g. development, test, local, or live).
 use sc_service::ChainType;
-///The identifier used for validators in the Aura consensus mechanism, based on the SR25519 cryptography.
+// The identifier used for validators in the Aura consensus mechanism, based on the SR25519 cryptography.
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-/// The identifier for authorities participating in the GRANDPA consensus protocol, based on cryptographic principles.
+// The identifier for authorities participating in the GRANDPA consensus protocol, based on cryptographic principles.
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
 
 use dev_runtime::{
-	AccountId,             // Represents the unique identifier for user accounts in the runtime.
-	RuntimeGenesisConfig,  // Configuration parameters for initializing the blockchain's genesis state.
-	Signature,             // Cryptographic signature type used within the runtime for transaction verification.
-	WASM_BINARY,           // Reference to the compiled WASM binary of the runtime, used for blockchain execution and validation.
+	AccountId,
+	RuntimeGenesisConfig,
+	Signature,
+	WASM_BINARY,
+	LOST,
 };
 use sp_core::{
-	sr25519,               // SR25519 cryptographic signature scheme
-	Pair,                  // Cryptographic key pair, encompassing both the private and public keys,
-	Public,                // Denotes the public key component of a cryptographic key pair, which can be shared openly to verify signatures made with the corresponding private key.
+	// SR25519 cryptographic signature scheme
+	sr25519,
+	// Cryptographic key pair (private and public keys).
+	Pair,
+	// Denotes the public key component of a cryptographic key pair.
+	Public,
 };
 use sp_runtime::traits::{
-	IdentifyAccount,       // A trait for extracting an account ID from a signature verifier, such as a public key.
-	Verify,                // Provides functionality to verify signatures made by an account, using a specific signer's public key or identifier.
+	// A trait for extracting an account ID from a signature verifier, such as a public key.
+	IdentifyAccount,
+	// Provides functionality to verify signatures made by an account, using a specific signer's public key or identifier.
+	Verify,
 };
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
@@ -32,17 +40,17 @@ pub type ChainSpec = sc_service::GenericChainSpec<RuntimeGenesisConfig>;
 /// HELPER FUNCTIONS
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// Generate a crypto pair from seed.
+// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
 	TPublic::Pair::from_string(&format!("//{}", seed), None)
 		.expect("static values are valid; qed")
 		.public()
 }
 
-/// This setup links account identities directly to their cryptographic verification mechanism.
+// This setup links account identities directly to their cryptographic verification mechanism.
 type AccountPublic = <Signature as Verify>::Signer;
 
-/// Generate an account ID from seed.
+// Generate account ID from seed.
 pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
 where
 	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
@@ -50,7 +58,7 @@ where
 	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
 }
 
-/// Generate an Aura and Grandpa authority key.
+// Generate an Aura and Grandpa authority key.
 pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 	(get_from_seed::<AuraId>(s), get_from_seed::<GrandpaId>(s))
 }
@@ -59,10 +67,10 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 /////////////////////////////////////////////////////////////////////////////////////
 
 pub fn development_config() -> Result<ChainSpec, String> {
-    
+
 	let mut properties = serde_json::map::Map::new();
-    properties.insert("tokenSymbol".into(), "LOST".into());
-    properties.insert("tokenDecimals".into(), 18.into());
+	properties.insert("tokenSymbol".into(), "LOST".into());
+	properties.insert("tokenDecimals".into(), 18.into());
 	
 	Ok(ChainSpec::builder(
 		WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?,
@@ -93,8 +101,8 @@ pub fn development_config() -> Result<ChainSpec, String> {
 pub fn local_devnet_config() -> Result<ChainSpec, String> {
 	
 	let mut properties = serde_json::map::Map::new();
-    properties.insert("tokenSymbol".into(), "LOST".into());
-    properties.insert("tokenDecimals".into(), 18.into());
+	properties.insert("tokenSymbol".into(), "LOST".into());
+	properties.insert("tokenDecimals".into(), 18.into());
 	
 	Ok(ChainSpec::builder(
 		WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?,
@@ -135,8 +143,8 @@ fn dev_genesis(
 ) -> serde_json::Value {
 	serde_json::json!({
 		"balances": {
-			// Sets up initial balances for specified accounts, each endowed with 1 << 60 units of the blockchain's currency
-			"balances": endowed_accounts.iter().cloned().map(|k| (k, 1u64 << 60)).collect::<Vec<_>>(),
+			// Sets up initial balances for specified accounts
+			"balances": endowed_accounts.iter().cloned().map(|k| (k, 1_000 * LOST)).collect::<Vec<_>>(),
 		},
 		"aura": {
 			// Configures the initial set of Aura authorities for block production

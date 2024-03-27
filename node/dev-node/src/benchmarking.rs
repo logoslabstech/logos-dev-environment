@@ -1,38 +1,44 @@
- /// IMPORT AND SETUP
+#![warn(missing_docs)]
+
+/// IMPORT AND SETUP
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// Utility for working with predefined SR25519 key pairs (testing).
+// Utility for working with predefined SR25519 key pairs.
 use sp_keyring::Sr25519Keyring;
-/// Represent a fully operational blockchain client
+// Fully operational blockchain client
 use crate::service::FullClient;
-/// Result type for CLI operations, aliasing a standard Result with an error type relevant to CLI commands.
+// Result type for CLI operations.
 use sc_cli::Result;
-/// Trait from sc_client_api for querying blockchain data by blocks.
+// Trait for querying blockchain data by blocks.
 use sc_client_api::BlockBackend;
 use dev_runtime as runtime;
 use runtime::{
-	AccountId,                   // Account identification.
-	Balance,                     // Balance representation.
-	BalancesCall,                // Interacting with the balances.
-	SystemCall,                  // Interacting with system pallets
+	AccountId,
+	Balance,
+	BalancesCall,
+	SystemCall,
 };
-/// Used for encoding data and managing cryptographic key pairs.
+// Used for encoding data and managing cryptographic key pairs.
 use sp_core::{
 	Encode,
 	Pair,
 };
-/// Tools for managing and providing data for block inclusions that do not come from external transactions, like timestamps.
+// Tools for managing and providing data for block inclusions that do not come from external transactions, like timestamps.
 use sp_inherents::{
 	InherentData,
 	InherentDataProvider,
 };
 use sp_runtime::{
-	OpaqueExtrinsic,      // A generic extrinsic type that the blockchain doesn't interpret directly, making it flexible for various runtime definitions.
-	SaturatedConversion,  // A utility trait for converting between numerical types without overflow errors.
+	// A generic extrinsic type that the blockchain doesn't interpret directly, making it flexible for various runtime definitions.
+	OpaqueExtrinsic,
+	// A utility trait for converting between numerical types without overflow errors.
+	SaturatedConversion,
 };
 use std::{
-	sync::Arc,            // A thread-safe reference-counting pointer from Rusts standard library, used for managing shared access to data.
-	time::Duration,       // A time measurement unit from Rust's standard library, for specifying time durations in operations.
+	// A thread-safe reference-counting pointer from Rusts standard library, used for managing shared access to data.
+	sync::Arc,
+	// A time measurement unit from Rust's standard library, for specifying time durations in operations.
+	time::Duration,
 };
 
 /// BENCHMARK STRUCTURE FOR RemarkBuilder

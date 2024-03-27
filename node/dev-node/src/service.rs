@@ -1,65 +1,71 @@
+#![warn(missing_docs)]
+
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 /// IMPORT
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// SR25519 key pair used by Aura consensus algorithm for block authoring.
+// SR25519 key pair used by Aura consensus algorithm for block authoring.
 use sp_consensus_aura::sr25519::AuthorityPair as AuraPair;
-/// Grandpa consensus used to manage and share the state of a voter.
+// Grandpa consensus used to manage and share the state of a voter.
 use sc_consensus_grandpa::SharedVoterState;
-/// Adding additional methods to the Future trait.
+// Adding additional methods to the Future trait.
 use futures::FutureExt;
-/// Interface for creating offchain transaction pools, that allows transactions to be submitted offchain.
+// Interface for creating offchain transaction pools, that allows transactions to be submitted offchain.
 use sc_transaction_pool_api::OffchainTransactionPoolFactory;
 use dev_runtime::{
-	opaque::Block,                  // Blockchains block structure.
-	RuntimeApi,                     // Access to runtime API calls.
+	opaque::Block,
+	RuntimeApi,
 };
-/// Provides interfaces for interacting with the blockchain database.
+// Provides interfaces for interacting with the blockchain database.
 use sc_client_api::{
-	Backend,                        // Generic interface for blockchain database system.
-	BlockBackend,                   // Provides specific methods for working with blocks.
+	// Generic interface for blockchain database system.
+	Backend,
+	// Provides specific methods for working with blocks.
+	BlockBackend,
 };
-/// Configuration types for setting up the Aura consensus mechanism,
+// Configuration types for setting up the Aura consensus mechanism,
 use sc_consensus_aura::{
-	ImportQueueParams,              // Parameters for import queue.
-	SlotProportion,                 // Slot proportion for block times.
-	StartAuraParams,                // Initial parameters to start Aura.
+	ImportQueueParams,
+	SlotProportion,
+	StartAuraParams,
 };
-/// Types for service configuration, error handling, task management, and warp sync parameters.
+// Types for service configuration, error handling, task management, and warp sync parameters.
 use sc_service::{
 	error::Error as ServiceError,
 	Configuration,
 	TaskManager,
 	WarpSyncParams,
 };
-/// Components for configuring and managing telemetry,
-/// useful for gathering and reporting runtime metrics and blockchain operation data.
+// Components for configuring and managing telemetry,
+// useful for gathering and reporting runtime metrics and blockchain operation data.
 use sc_telemetry::{
 	Telemetry,
 	TelemetryWorker,
 };
-/// Standard Rust imports for atomic reference counting (Arc) and time durations (Duration).
+// Standard Rust imports for atomic reference counting (Arc) and time durations (Duration).
 use std::{
-	sync::Arc,        // A thread-safe, reference-counting pointer, used for shared ownership.
-	time::Duration,   // A struct for measuring time durations, used for configuring time-related parameters.
+	// A thread-safe, reference-counting pointer, used for shared ownership.
+	sync::Arc,
+	// A struct for measuring time durations, used for configuring time-related parameters.
+	time::Duration,
 };
 
 /// SERVICE TYPE DEFINITION
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// Service type defined as a collection of components that are required to build and operate the node service.
+// Service type defined as a collection of components that are required to build and operate the node service.
 
-/// Its a specialized version of a Substrate client,
-/// configured for full node operation with specific components tailored to the blockchains requirements.
+// Its a specialized version of a Substrate client,
+// configured for full node operation with specific components tailored to the blockchains requirements.
 pub(crate) type FullClient = sc_service::TFullClient<
 	Block,
 	RuntimeApi,
 	sc_executor::WasmExecutor<sp_io::SubstrateHostFunctions>,
 >;
 
-/// Specifies the storage backend for the full node.
-/// This backend handles the physical storage of blockchain data, including blocks and state.
+// Specifies the storage backend for the full node.
+// This backend handles the physical storage of blockchain data, including blocks and state.
 type FullBackend = sc_service::TFullBackend<Block>;
 
 /// Determines the chain selection strategy for the node using the LongestChain policy.
@@ -67,7 +73,7 @@ type FullBackend = sc_service::TFullBackend<Block>;
 /// It is parameterized with the FullBackend to interact with stored block data and the block type.
 type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
 
-/// Substrate service configuration for the partial components needed to assemble a blockchain node
+// Substrate service configuration for the partial components needed to assemble a blockchain node
 pub type Service = sc_service::PartialComponents<
 	FullClient,
 	FullBackend,
@@ -76,7 +82,7 @@ pub type Service = sc_service::PartialComponents<
 	sc_consensus::DefaultImportQueue<Block>,
 	// The transaction pool for the full node, handling transaction queuing, storage, and propagation.
 	sc_transaction_pool::FullPool<Block, FullClient>,
-    // Tuple of components
+	// Tuple of components
 	(
 		// A component for importing blocks with GRANDPA consensus data, integrating GRANDPA finality proofs into the blockchain.
 		sc_consensus_grandpa::GrandpaBlockImport<FullBackend, Block, FullClient, FullSelectChain>,
@@ -90,7 +96,7 @@ pub type Service = sc_service::PartialComponents<
 /// CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// The minimum period of blocks on which justifications will be imported and generated.
+// The minimum period of blocks on which justifications will be imported and generated.
 const GRANDPA_JUSTIFICATION_PERIOD: u32 = 512;
 
 /// new_partial FUNCTION
@@ -103,7 +109,7 @@ const GRANDPA_JUSTIFICATION_PERIOD: u32 = 512;
 
 pub fn new_partial(config: &Configuration) -> Result<Service, ServiceError> {
 
-    // Telemetry (creates a TelemetryWorker)
+	// Telemetry (creates a TelemetryWorker)
 	let telemetry = config
 		.telemetry_endpoints
 		.clone()
@@ -126,7 +132,7 @@ pub fn new_partial(config: &Configuration) -> Result<Service, ServiceError> {
 			executor,
 		)?;
 
-    // Client Arc (provides core access to the blockchain data and APIs)
+	// Client Arc (provides core access to the blockchain data and APIs)
 	let client = Arc::new(client);
 
 	// Telemetry setup (starting a new asynchronous task for each telemetry worker, which processes and sends the telemetry data)
@@ -157,10 +163,10 @@ pub fn new_partial(config: &Configuration) -> Result<Service, ServiceError> {
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
 
-    // slot_duration (slot duration for the Aura consensus mechanism is calculated here)
+	// Slot duration for the Aura consensus mechanism is calculated here
 	let slot_duration = sc_consensus_aura::slot_duration(&*client)?;
 
-	// import_queue (is crucial for the processing and validation of incoming blocks before they are added to the blockchain.)
+	// Is crucial for the processing and validation of incoming blocks before they are added to the blockchain.
 	let import_queue =
 		sc_consensus_aura::import_queue::<AuraPair, _, _, _, _, _>(ImportQueueParams {
 			block_import: grandpa_block_import.clone(),
@@ -204,7 +210,7 @@ pub fn new_partial(config: &Configuration) -> Result<Service, ServiceError> {
 /// The new_full function is defined to performs the full node configuration and initialization for a blockchain node.
 /// This function complements the subcomponents created by the new_partial function to create a fully functional node.
 
-/// Builds a new service for a full client.
+// Builds a new service for a full client.
 pub fn new_full(config: Configuration) -> Result<TaskManager, ServiceError> {
 
 	// Basic configuration and partial components
@@ -234,7 +240,7 @@ pub fn new_full(config: Configuration) -> Result<TaskManager, ServiceError> {
 	net_config.add_notification_protocol(grandpa_protocol_config);
 
 	// Warp Sync configuration necessary for network initialization.
-    // Warp Sync allows new nodes to quickly synchronize the current state of the blockchain.
+	// Warp Sync allows new nodes to quickly synchronize the current state of the blockchain.
 	let warp_sync = Arc::new(sc_consensus_grandpa::warp_proof::NetworkProvider::new(
 		backend.clone(),
 		grandpa_link.shared_authority_set().clone(),
@@ -307,7 +313,7 @@ pub fn new_full(config: Configuration) -> Result<TaskManager, ServiceError> {
 		// Clones of the blockchain client and transaction pool are captured by the closure and will be used for creating RPC dependencies.
 		let client = client.clone();
 		let pool = transaction_pool.clone();
-        // Creates a boxed closure, which is a function that can be stored and passed around.
+		// Creates a boxed closure, which is a function that can be stored and passed around.
 		Box::new(move |deny_unsafe, _| {
 			let deps =
 				// Constructs the dependencies needed by the RPC extensions.
@@ -316,7 +322,7 @@ pub fn new_full(config: Configuration) -> Result<TaskManager, ServiceError> {
 			crate::rpc::create_full(deps).map_err(Into::into)
 		})
 	};
-    // This function takes the RPC extensions and integrates them into the service so that they are accessible via the network.
+	// This function takes the RPC extensions and integrates them into the service so that they are accessible via the network.
 	let _rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
 		network: network.clone(),
 		client: client.clone(),
@@ -346,7 +352,7 @@ pub fn new_full(config: Configuration) -> Result<TaskManager, ServiceError> {
 			telemetry.as_ref().map(|x| x.handle()),
 		);
 		
-		// slot_duration (is important to determine how often blocks should be created.)
+		// Is important to determine how often blocks should be created.
 		let slot_duration = sc_consensus_aura::slot_duration(&*client)?;
 
 		// AURA consensus configuration

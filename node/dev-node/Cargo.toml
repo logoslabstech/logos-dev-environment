@@ -1,6 +1,6 @@
 [package]
 name = "dev-node"
-version = "0.0.1-dev"
+version = "0.0.2"
 description = "Substrate based node for Logos development purposes."
 authors = ["LogosLabs <https://github.com/logoslabstech>"]
 homepage = "https://logoslabs.io."

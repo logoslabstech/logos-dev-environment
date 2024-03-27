@@ -1,6 +1,6 @@
 [package]
 name = "dev-runtime"
-version = "0.0.1-dev"
+version = "0.0.2"
 description = "Substrate based runtime for Logos development purposes"
 authors = ["LogosLabs <https://github.com/logoslabstech>"]
 homepage = "https://logoslabs.io/"
@@ -40,6 +40,7 @@ frame-system-benchmarking =                   { workspace = true, optional = tru
 frame-try-runtime =                           { workspace = true, optional = true }
 frame-system-rpc-runtime-api =                { workspace = true }
 pallet-aura =                                 { workspace = true }
+pallet-assets =                               { workspace = true }
 pallet-balances =                             { workspace = true }
 pallet-contracts =                            { workspace = true }
 pallet-insecure-randomness-collective-flip =  { workspace = true }
@@ -66,6 +67,7 @@ std = [
 	"frame-system/std",
 	"frame-try-runtime/std",
 	"pallet-aura/std",
+	"pallet-assets/std",
 	"pallet-balances/std",
 	"pallet-contracts/std",
 	"pallet-grandpa/std",

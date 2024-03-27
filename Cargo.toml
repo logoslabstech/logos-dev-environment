@@ -42,7 +42,7 @@ jsonrpsee =          { version = "0.20.3" } # https://crates.io/crates/jsonrpsee
 # Local dependencies
 #==============================================================================================#
 # Development node runtime
-dev-runtime =  { version = "0.0.1-dev", path = "runtime/dev-runtime" }
+dev-runtime =  { version = "0.0.2", path = "runtime/dev-runtime" }
 
 #==============================================================================================#
 # Substrate PRIMITIVES (github.com/paritytech/polkadot-sdk - release-polkadot-v1.7.0 )
@@ -148,6 +148,8 @@ frame-system-rpc-runtime-api =                { git = "https://github.com/parity
 frame-try-runtime =                           { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
 # pallet_aura:                                https://paritytech.github.io/polkadot-sdk/master/pallet_aura/index.html
 pallet-aura =                                 { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
+# pallet_assets:                              https://paritytech.github.io/polkadot-sdk/master/pallet_assets/index.html
+pallet-assets =                               { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
 # pallet_balances:                            https://paritytech.github.io/polkadot-sdk/master/pallet_balances/index.html
 pallet-balances =                             { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.0", default-features = false }
 # pallet_contracts:                           https://paritytech.github.io/polkadot-sdk/master/pallet_contracts/index.html#
