@@ -13,7 +13,7 @@ This leads to a clean and secure productive environment that contains only the r
 
 ## Project structure
 > [!NOTE]  
-> Since the project is in the early stages, the structure of the project can change or be extended.
+> Since the project is in the early stages, the structure of the project may change or may be extended.
 
 The project structure currently consists of 3 main "segments"
 
@@ -33,19 +33,19 @@ The approach behind this is to make versioning clearer and to enable easier depe
 ## Nightly vs Stable
 In the Rust programming language, there are various "release channels" (stable, nightly, ...) that determine how often and in what form new versions and updates are made available.
 
-The **Stable** channel is Rust's main release line. Versions in the stable channel are released every six weeks and have undergone strict quality control
+The **Stable** channel is Rust's main release line. Versions in the stable channel are released every six weeks and have undergone strict quality control.
 
-The **Nightly** channel, on the other hand, is a pre-release version of Rust which, as the name suggests, is updated daily. Nightly builds contain the very latest features and changes that are not yet available in the stable channel
+The **Nightly** channel, on the other hand, is a pre-release version of Rust which, as the name suggests, is updated daily. Nightly builds contain the very latest features and changes that are not yet available in the stable channel.
 
 Stable is usually the best choice for production-ready applications, while Nightly is a good option for research, development of new Rust features or for projects that rely on the very latest language features.
 
-We use the stable chanel because we are not dependent on the latest Rust features, as we also wait for sufficient stability in the substrate field before the updates are performed  
+We use the stable channel because we are not dependent on the latest Rust features, as we also wait for sufficient stability in the substrate field before the updates are performed.
 
 ## Support and Contribution
 If you have any questions or want to support or assist us in any way or maybe you want to join our team, you can simply contact us via the tech.support@logoslabs.io mail address.
 
 ## Ressources
-[Logos Network concept paper](https://logoslabs.io/concept/logos-network-concept-paper.pdf)  
-[Logos website](https://logoslabs.io)  
-[Logos documentation](https://logoslabs.io/docs)  
-[Logos blog](https://logoslabs.io/blog)
+[Logos Network concept paper](https://logoslabs.io/concept/logos-network-concept-paper.pdf)
+[Logos website](https://logoslabs.io)
+[Logos documentation](https://docs.logoslabs.io)
+[Logos blog](https://blog.logoslabs.io/)
