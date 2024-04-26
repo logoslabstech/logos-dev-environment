@@ -17,7 +17,7 @@ panic = "unwind"
 [workspace.package]
 authors = ["LogosLabs"]
 homepage = "https://logoslabs.io"
-repository = "https://github.com/logoslabstech/sub-dev-environment"
+repository = "https://github.com/logoslabstech/logos-dev-environment"
 edition = "2021"
 
 [workspace.dependencies]
