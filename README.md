@@ -27,7 +27,7 @@ As the implementation of the Logos network will mainly be carried out by smart c
 For a clean code and project some general configurations are necessary.
 
 ## Dependency structure
-The dependencies are all defined and versioned in the main cargo workspace (/Cargo.toml) and are then implemented where required.
+The dependencies are all defined and versioned in the main cargo manifest (/Cargo.toml) and are then implemented where required.
 The approach behind this is to make versioning clearer and to enable easier dependency management.
 
 ## Nightly vs Stable
@@ -39,13 +39,20 @@ The **Nightly** channel, on the other hand, is a pre-release version of Rust whi
 
 Stable is usually the best choice for production-ready applications, while Nightly is a good option for research, development of new Rust features or for projects that rely on the very latest language features.
 
-We use the stable channel because we are not dependent on the latest Rust features, as we also wait for sufficient stability in the substrate field before the updates are performed.
+We choose the stable channel because we do not rely on the latest Rust features, and we prefer to ensure sufficient stability before implementing updates.
 
 ## Support and Contribution
-If you have any questions or want to support or assist us in any way or maybe you want to join our team, you can simply contact us via the tech.support@logoslabs.io mail address.
+If you have any questions or would like to support or assist us in any way, you can simply contact us via the email address tech.support@logoslabs.io, open a [GitHub issue](https://github.com/logoslabstech/logos-resources/issues/new/choose), or ask anything on [Discord](https://discord.com/channels/840352211602374657/1242178591744200804).
+
+## Preparation for Development :
+
+[**Workstation configuration**](https://docs.logoslabs.io/development/dev-env/development-workstation)   
+[**Local environment configuration**](https://docs.logoslabs.io/development/dev-env/dev-env-config)   
 
 ## Ressources
-[Logos Network concept paper](https://logoslabs.io/concept/logos-network-concept-paper.pdf)
-[Logos website](https://logoslabs.io)
-[Logos documentation](https://docs.logoslabs.io)
-[Logos blog](https://blog.logoslabs.io/)
+[Logos Network concept paper](https://logoslabs.io/concept/logos-network-concept-paper.pdf)   
+[Logos website](https://logoslabs.io)   
+[Logos documentation](https://docs.logoslabs.io)   
+[Logos blog](https://blog.logoslabs.io/)   
+
+### **We look forward to your contributions and insights as we work together to shape the future of the Web3!**
