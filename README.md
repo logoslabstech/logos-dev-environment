@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> This repository is no longer maintained and has been migrated to https://github.com/logoslabstech/logos-chain-dev, where it continues under the GPLv3 license.
+
 # Logos Development Environment
 
 **The Logos project has the mission to provide the Web3 with an autonomous, community provided, blockchain secured and enterprise grade computational layer, named sub0layer.**
